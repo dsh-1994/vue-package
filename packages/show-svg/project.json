@@ -1,0 +1,9 @@
+{
+  "name": "show-svg",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/show-svg/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project show-svg --web",
+  "targets": {}
+}

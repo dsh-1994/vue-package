@@ -1,0 +1,16 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "dida-ui": ["packages/dida-ui/src/index.ts"],
+      "orders": ["modules/orders/src/index.ts"],
+      "products": ["modules/products/src/index.ts"],
+      "show-svg": ["packages/show-svg/src/index.ts"],
+      "ui": ["modules/ui/src/index.ts"]
+    }
+  }
+}

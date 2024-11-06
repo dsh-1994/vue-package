@@ -1,0 +1,26 @@
+// 皮肤变量
+
+// 亮
+$light-color: rgb(69, 97, 246);
+$light-bg-color: rgba(69, 97, 246, 0.05);
+// 暗
+$dark-color: rgb(204, 204, 204);
+
+:root {
+  // 浅色主题
+  --primary-color: #{$light-color};
+  --primary-bg-color: #{$light-bg-color};
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    // 深色主题
+    --primary-color: #{$dark-color};
+  }
+}
+
+:export {
+  --light-color: #{$light-color};
+  --light-bg-color: #{$light-bg-color};
+  --dark-color: #{$dark-color};
+}
