@@ -10,6 +10,7 @@ import { useRouter, type RouteLocationRaw } from "vue-router";
 export type DLayoutTabOption = {
   title: string;
   value: string;
+  exact?: boolean;
   to?: RouteLocationRaw;
 };
 export type DLayoutTabOptions = Array<DLayoutTabOption>;

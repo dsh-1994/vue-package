@@ -1,12 +1,12 @@
 <template>
   <DLayout
+    v-model="menuSelected"
     v-model:menu-opened="menuOpened"
-    v-model:menu-selected="menuSelected"
     v-model:tab-select-value="tabSelectValue"
     :menu-options="menuOptions"
     :tab-options="tabOptions"
+    @update:model-value="onMenuSelected"
     @update:menu-opened="onMenuOpened"
-    @update:menu-selected="onMenuSelected"
     @update:tab-select-value="onTabSelectValue"
     @delete:tab-option="onDeleteTabOption"
   >
@@ -39,7 +39,7 @@ import {
   type DLayoutTabOptions,
 } from "dida-ui";
 import Logo from "@/assets/vuetify-logo-light.png";
-import { computed, ref } from "vue";
+import { computed, nextTick, ref } from "vue";
 import ShowSvg from "show-svg";
 import Language from "@/components/Language.vue";
 import User from "@/components/User.vue";
@@ -57,6 +57,13 @@ const menuOpened = ref<string[]>([]);
 const menuSelected = ref<string[]>([]);
 const menuOptions = computed<DLayoutMenuOptions>(() => [
   {
+    title: t("menu.home"),
+    value: "home",
+    prependIcon: () => <ShowSvg name="work-order-center" />,
+    to: { name: "home" },
+    exact: true,
+  },
+  {
     title: t("menu.workbenches"),
     value: "workbenches",
     prependIcon: () => <ShowSvg name="workbenches" />,
@@ -65,53 +72,62 @@ const menuOptions = computed<DLayoutMenuOptions>(() => [
         title: t("menu.hotel"),
         value: "workbenches-hotel",
         to: { name: "workbenches-hotel" },
+        exact: true,
       },
       {
         title: t("menu.secondaryConfirmation"),
         value: "workbenches-secondary_confirmation",
         to: { name: "workbenches-secondary_confirmation" },
+        exact: true,
       },
       {
         title: t("menu.planeTicket"),
         value: "workbenches-plane_ticket",
         to: { name: "workbenches-plane_ticket" },
+        exact: true,
       },
       {
         title: t("menu.operation"),
         value: "workbenches-operation",
         to: { name: "workbenches-operation" },
+        exact: true,
       },
     ],
   },
   {
     title: t("menu.workOrderCenter"),
     value: "work_order_center",
-    prependIcon: () => <ShowSvg name="work-order-center" color="" />,
+    prependIcon: () => <ShowSvg name="work-order-center" />,
     to: { name: "work_order_center" },
+    exact: true,
   },
   {
     title: t("menu.staffManagement"),
     value: "staff_management",
     prependIcon: () => <ShowSvg name="staff-management" />,
     to: { name: "staff_management" },
+    exact: true,
   },
   {
     title: t("menu.monitoringBoard"),
     value: "monitoring_board",
     prependIcon: () => <ShowSvg name="monitoring-board" />,
     to: { name: "monitoring_board" },
+    exact: true,
   },
   {
     title: t("menu.processConfiguration"),
     value: "process_configuration",
     prependIcon: () => <ShowSvg name="process-configuration" />,
     to: { name: "process_configuration" },
+    exact: true,
   },
   {
     title: t("menu.knowledgeBase"),
     value: "knowledge_base",
     prependIcon: () => <ShowSvg name="knowledge-base" />,
     to: { name: "knowledge_base" },
+    exact: true,
   },
 ]);
 
@@ -129,7 +145,7 @@ function onMenuOpened(value: string[]) {
   // console.log("Home onOpened", value);
 }
 function onMenuSelected(value: string[]) {
-  // console.log("Home onSelected", value);
+  console.log("Home onSelected", value);
   // 左侧menu选中，需要设置tab菜单
   // 如果不需要tab，如果不需要联动就不需要监听
   const pathname = value[0];
@@ -139,7 +155,7 @@ function onMenuSelected(value: string[]) {
   }
 }
 function onTabSelectValue(value?: string) {
-  // console.log("Home onTabSelectValue", value);
+  console.log("Home onTabSelectValue", value);
   // tab菜单选中，需要对应到左侧menu选中、展开的值
   if (value) {
     menuSelected.value = [value];
@@ -150,7 +166,11 @@ function onTabSelectValue(value?: string) {
     // 这表示tab都被删除了，剩下空的列表返回
     menuSelected.value = [];
     menuOpened.value = [];
-    router.push("/");
+    // 没了就丢到首页
+    nextTick(() => {
+      router.push("/");
+      onMenuSelected(["home"]);
+    });
   }
 }
 function onDeleteTabOption(value: string) {

@@ -9,6 +9,11 @@ const router = createRouter({
       component: Main,
       children: [
         {
+          path: "",
+          name: "home",
+          component: () => import("@/views/Home.vue").then((m) => m),
+        },
+        {
           path: "/workbenches",
           children: [
             {

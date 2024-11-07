@@ -9,6 +9,7 @@ import type { RouteLocationRaw } from "vue-router";
 export type DLayoutMenuOption = {
   title: string;
   value: string;
+  exact?: boolean;
   to?: RouteLocationRaw;
   prependIcon?: () => VNode;
 } & { children?: DLayoutMenuOptions };
@@ -30,13 +31,13 @@ export const DLayoutMenuPropsT = {
     type: Array as PropType<string[]>,
   },
   /** 菜单选中 */
-  menuSelected: {
+  modelValue: {
     type: Array as PropType<string[]>,
   },
 } as const;
 export const DLayoutMenuEmitsT = {
   "update:menuOpened": (_value: string[]) => true,
-  "update:menuSelected": (_value: string[]) => true,
+  "update:modelValue": (_value: string[]) => true,
 };
 
 export const DLayoutMenu = defineComponent({
@@ -55,6 +56,7 @@ export const DLayoutMenu = defineComponent({
           key: option.value,
           value: option.value,
           title: option.title,
+          exact: option.exact,
           to: option.to,
           prependIcon: option.prependIcon,
         };
@@ -78,7 +80,7 @@ export const DLayoutMenu = defineComponent({
     };
 
     // 外部状态，如果外部未设置初始值就不做双向绑定
-    const { menuOpened, menuSelected } = useVModels(props, emit);
+    const { menuOpened, modelValue } = useVModels(props, emit);
 
     return () => {
       return (
@@ -86,9 +88,7 @@ export const DLayoutMenu = defineComponent({
           color={config["--light-color"]}
           mandatory
           {...(menuOpened.value == null ? {} : { opened: menuOpened.value })}
-          {...(menuSelected.value == null
-            ? {}
-            : { selected: menuSelected.value })}
+          {...(modelValue.value == null ? {} : { selected: modelValue.value })}
           onUpdate:opened={(value: string[]) => {
             if (menuOpened.value == null) {
               emit("update:menuOpened", value);
@@ -97,10 +97,10 @@ export const DLayoutMenu = defineComponent({
             }
           }}
           onUpdate:selected={(value: string[]) => {
-            if (menuSelected.value == null) {
-              emit("update:menuSelected", value);
+            if (modelValue.value == null) {
+              emit("update:modelValue", value);
             } else {
-              menuSelected.value = value;
+              modelValue.value = value;
             }
           }}
         >

@@ -37,7 +37,7 @@ export const DLayout = defineComponent({
 
     // menu 双向绑定状态
     const menuOpenedModel = useVModel(props, "menuOpened", emit);
-    const menuSelectedModel = useVModel(props, "menuSelected", emit);
+    const modelValueModel = useVModel(props, "modelValue", emit);
 
     // tab 双向绑定状态
     const tabSelectValueModel = useVModel(props, "tabSelectValue", emit);
@@ -89,7 +89,7 @@ export const DLayout = defineComponent({
                 <DLayoutMenu
                   menuOptions={props.menuOptions}
                   v-model:menuOpened={menuOpenedModel.value}
-                  v-model:menuSelected={menuSelectedModel.value}
+                  v-model:modelValue={modelValueModel.value}
                 />
               </div>
             </div>
