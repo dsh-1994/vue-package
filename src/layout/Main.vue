@@ -7,7 +7,6 @@
     :tab-options="tabOptions"
     @update:menu-opened="onMenuOpened"
     @update:menu-selected="onMenuSelected"
-    @update:tab-options="onTabOptions"
     @update:tab-select-value="onTabSelectValue"
     @delete:tab-option="onDeleteTabOption"
   >
@@ -45,9 +44,14 @@ import ShowSvg from "show-svg";
 import Language from "@/components/Language.vue";
 import User from "@/components/User.vue";
 import { useI18n } from "vue-i18n";
-import { findManagerByTree, treeToArray } from "@/utils";
+import { findManagerByTree, findTree, treeToArray } from "@/utils";
+import { useRoute, useRouter } from "vue-router";
+import { useCurrentTabsStore } from "@/stores/current-tabs";
 
 const { t } = useI18n();
+const route = useRoute();
+const router = useRouter();
+const currentTabsStore = useCurrentTabsStore();
 
 const menuOpened = ref<string[]>([]);
 const menuSelected = ref<string[]>([]);
@@ -114,43 +118,57 @@ const menuList = computed<DLayoutMenuOptions>(() =>
   treeToArray(menuOptions.value)
 );
 
-const tabOptionKeys = ref<Set<string>>(new Set());
 const tabOptions = computed<DLayoutTabOptions>(() =>
-  menuList.value.filter((menu) => tabOptionKeys.value.has(menu.value))
+  menuList.value.filter((menu) =>
+    currentTabsStore.tabOptionKeys.has(menu.value)
+  )
 );
 const tabSelectValue = ref<string>("");
 
 function onMenuOpened(value: string[]) {
-  // console.log('Home onOpened', value)
+  // console.log("Home onOpened", value);
 }
 function onMenuSelected(value: string[]) {
-  // console.log('Home onSelected', value)
-  // 左侧菜单选中，需要设置tab菜单
+  // console.log("Home onSelected", value);
+  // 左侧menu选中，需要设置tab菜单
+  // 如果不需要tab，如果不需要联动就不需要监听
   const pathname = value[0];
   if (pathname) {
-    tabOptionKeys.value.add(pathname);
-    tabSelectValue.value = pathname;
+    currentTabsStore.addTabOptionList(pathname); // 加一个tab
+    tabSelectValue.value = pathname; // 选中tab
   }
 }
-function onTabOptions(value: DLayoutTabOptions) {
-  // console.log('Home onTabOptions', value)
-}
+// @update:tab-options="onTabOptions"
+// function onTabOptions(value: DLayoutTabOptions) {
+//   console.log("Home onTabOptions", value);
+// }
 function onTabSelectValue(value?: string) {
-  // console.log('Home onTabSelectValue', value)
-  // tab菜单选中，需要对应到左侧菜单
+  // console.log("Home onTabSelectValue", value);
+  // tab菜单选中，需要对应到左侧menu选中、展开的值
   if (value) {
     menuSelected.value = [value];
     menuOpened.value = findManagerByTree(menuOptions.value, value).map(
       (item) => item.value
     );
   } else {
+    // 这表示tab都被删除了，剩下空的列表返回
     menuSelected.value = [];
     menuOpened.value = [];
+    router.push("/");
   }
 }
 function onDeleteTabOption(value: string) {
-  // console.log('Home onDeleteTabOption', value)
+  // console.log("Home onDeleteTabOption", value);
   // 删除tab菜单
-  tabOptionKeys.value.delete(value);
+  currentTabsStore.delTabOptionList(value);
+}
+
+// 需要做到 watch 内，左侧 menu 和顶部 tab 以及手动输入都需要监听
+if (typeof route.name === "string" && route.name) {
+  const menuOption = findTree(menuOptions.value, route.name);
+  if (menuOption && menuOption.to) {
+    // 是路由，选中
+    onMenuSelected([menuOption.value]);
+  }
 }
 </script>

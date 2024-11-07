@@ -1,21 +1,28 @@
 /** 在树结构内查找某一项 */
 export function findTree<T extends Record<string, any>>(
   tree: T[],
-  value: string
+  value: string,
+  option: { keyField: string; childField: string } = {
+    keyField: "value",
+    childField: "children",
+  }
 ): T | undefined {
   let item: T | undefined = undefined;
 
   function deep(list: T[]) {
     for (let i = 0; i < list.length; i++) {
       const treeItem = list[i];
-      if (treeItem.value === value) {
+      if (treeItem[option.keyField] === value) {
         item = treeItem;
       }
       if (item) {
         break;
       }
-      if (treeItem.children && treeItem.children.length > 0) {
-        deep(treeItem.children);
+      if (
+        treeItem[option.childField] &&
+        treeItem[option.childField].length > 0
+      ) {
+        deep(treeItem[option.childField]);
       }
     }
   }

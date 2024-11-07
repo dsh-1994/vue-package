@@ -9,7 +9,7 @@
     </template>
     <v-list>
       <v-list-item
-        v-for="item in menuList"
+        v-for="item in userConfigStore.menuList"
         :key="item.value"
         :value="item.value"
         density="compact"
@@ -29,15 +29,15 @@ import { useI18n } from "vue-i18n";
 import { computed } from "vue";
 
 const { locale } = useI18n();
-const { menuList, useInfo } = useUserConfigStore();
+const userConfigStore = useUserConfigStore();
 
 // 计算用户名
 const userName = computed(() => {
   if (locale.value === "zh-cn") {
-    return useInfo.zhCnName;
+    return userConfigStore.useInfo.zhCnName;
   }
   // 除了中文环境，其他都使用英文
-  return useInfo.enName;
+  return userConfigStore.useInfo.enName;
 });
 // 取出首字符
 const firstChar = computed(() => userName.value.slice(0, 1));

@@ -1,5 +1,5 @@
-@use './variables.scss' as *;
-@use '../../styles/theme.module.scss' as *;
+@use "./variables.scss" as *;
+@use "../../styles/theme.module.scss" as *;
 
 .d-layout {
   &-anime-flip {
@@ -56,7 +56,7 @@
       align-items: center;
       font-size: 10px;
       &::after {
-        content: '';
+        content: "";
         position: absolute;
         width: 1px;
         height: 30px;
@@ -85,6 +85,7 @@
     }
     .d-layout-tab-text {
       padding-right: 10px;
+      text-transform: none;
     }
 
     .v-tab-item--selected {

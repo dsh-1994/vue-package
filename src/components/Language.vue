@@ -5,7 +5,7 @@
     </template>
     <v-list :selected="[$i18n.locale]" @update:selected="sel">
       <v-list-item
-        v-for="item in languageList"
+        v-for="item in userConfigStore.languageList"
         :key="item.value"
         :value="item.value"
         density="compact"
@@ -21,15 +21,19 @@
 import { useI18n } from "vue-i18n";
 import { useUserConfigStore } from "@/stores/user-config";
 import ShowSvg from "show-svg";
+import { watchEffect } from "vue";
 
 const { locale } = useI18n();
-const { languageList } = useUserConfigStore();
+const userConfigStore = useUserConfigStore();
 
 function iconfn() {
   return <ShowSvg size={"20px"} name="multilingual" />;
 }
 
 function sel(v: string[]) {
-  locale.value = v[0];
+  userConfigStore.local = v[0];
 }
+watchEffect(() => {
+  locale.value = userConfigStore.local;
+});
 </script>
