@@ -1,6 +1,6 @@
 <template>
   <v-menu>
-    <template v-slot:activator="{ props }">
+    <template #activator="{ props }">
       <VBtn size="smail" variant="text" rounded="circle" v-bind="props">
         <div class="name">
           {{ firstChar }}
@@ -24,23 +24,23 @@
 
 <script lang="tsx" setup>
 // 用户信息组件
-import { useUserConfigStore } from '@/stores/user-config'
-import { useI18n } from 'vue-i18n'
-import { computed } from 'vue'
+import { useUserConfigStore } from "@/stores/user-config";
+import { useI18n } from "vue-i18n";
+import { computed } from "vue";
 
-const { locale } = useI18n()
-const { menuList, useInfo } = useUserConfigStore()
+const { locale } = useI18n();
+const { menuList, useInfo } = useUserConfigStore();
 
 // 计算用户名
 const userName = computed(() => {
-  if (locale.value === 'zh-cn') {
-    return useInfo.zhCnName
+  if (locale.value === "zh-cn") {
+    return useInfo.zhCnName;
   }
   // 除了中文环境，其他都使用英文
-  return useInfo.enName
-})
+  return useInfo.enName;
+});
 // 取出首字符
-const firstChar = computed(() => userName.value.slice(0, 1))
+const firstChar = computed(() => userName.value.slice(0, 1));
 </script>
 
 <style lang="scss" scoped>

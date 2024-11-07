@@ -1,6 +1,6 @@
 <template>
   <v-menu>
-    <template v-slot:activator="{ props }">
+    <template #activator="{ props }">
       <VBtn size="smail" variant="text" :icon="iconfn" v-bind="props"></VBtn>
     </template>
     <v-list :selected="[$i18n.locale]" @update:selected="sel">
@@ -18,18 +18,18 @@
 
 <script lang="tsx" setup>
 // 多语言组件
-import { useI18n } from 'vue-i18n'
-import { useUserConfigStore } from '@/stores/user-config'
-import ShowSvg from 'show-svg'
+import { useI18n } from "vue-i18n";
+import { useUserConfigStore } from "@/stores/user-config";
+import ShowSvg from "show-svg";
 
-const { locale } = useI18n()
-const { languageList } = useUserConfigStore()
+const { locale } = useI18n();
+const { languageList } = useUserConfigStore();
 
 function iconfn() {
-  return <ShowSvg size={'20px'} name="multilingual" />
+  return <ShowSvg size={"20px"} name="multilingual" />;
 }
 
 function sel(v: string[]) {
-  locale.value = v[0]
+  locale.value = v[0];
 }
 </script>
