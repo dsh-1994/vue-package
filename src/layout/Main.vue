@@ -114,10 +114,10 @@ const menuOptions = computed<DLayoutMenuOptions>(() => [
     to: { name: "knowledge_base" },
   },
 ]);
+
 const menuList = computed<DLayoutMenuOptions>(() =>
   treeToArray(menuOptions.value)
 );
-
 const tabOptions = computed<DLayoutTabOptions>(() =>
   menuList.value.filter((menu) =>
     currentTabsStore.tabOptionKeys.has(menu.value)
@@ -138,10 +138,6 @@ function onMenuSelected(value: string[]) {
     tabSelectValue.value = pathname; // 选中tab
   }
 }
-// @update:tab-options="onTabOptions"
-// function onTabOptions(value: DLayoutTabOptions) {
-//   console.log("Home onTabOptions", value);
-// }
 function onTabSelectValue(value?: string) {
   // console.log("Home onTabSelectValue", value);
   // tab菜单选中，需要对应到左侧menu选中、展开的值
@@ -163,7 +159,7 @@ function onDeleteTabOption(value: string) {
   currentTabsStore.delTabOptionList(value);
 }
 
-// 需要做到 watch 内，左侧 menu 和顶部 tab 以及手动输入都需要监听
+// 初始化时手动跳转一次
 if (typeof route.name === "string" && route.name) {
   const menuOption = findTree(menuOptions.value, route.name);
   if (menuOption && menuOption.to) {

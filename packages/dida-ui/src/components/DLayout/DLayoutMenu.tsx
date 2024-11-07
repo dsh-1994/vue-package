@@ -85,13 +85,23 @@ export const DLayoutMenu = defineComponent({
         <VList
           color={config["--light-color"]}
           mandatory
-          opened={menuOpened.value}
-          selected={menuSelected.value}
+          {...(menuOpened.value == null ? {} : { opened: menuOpened.value })}
+          {...(menuSelected.value == null
+            ? {}
+            : { selected: menuSelected.value })}
           onUpdate:opened={(value: string[]) => {
-            menuOpened.value = value;
+            if (menuOpened.value == null) {
+              emit("update:menuOpened", value);
+            } else {
+              menuOpened.value = value;
+            }
           }}
           onUpdate:selected={(value: string[]) => {
-            menuSelected.value = value;
+            if (menuSelected.value == null) {
+              emit("update:menuSelected", value);
+            } else {
+              menuSelected.value = value;
+            }
           }}
         >
           {renderMenu(props.menuOptions, 1)}

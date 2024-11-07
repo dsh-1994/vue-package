@@ -1,7 +1,7 @@
 import { defineComponent, withModifiers, type PropType } from "vue";
 import "./DLayout.scss";
 import { VBtn, VTab, VTabs } from "vuetify/components";
-import { useVModels } from "@vueuse/core";
+import { useVModel } from "@vueuse/core";
 
 import config from "../../styles/theme.module.scss";
 import ShowSvg from "show-svg";
@@ -36,7 +36,6 @@ export const DLayoutTabsPropsT = {
   },
 } as const;
 export const DLayoutTabsEmitsT = {
-  "update:tabOptions": (_value: DLayoutTabOptions) => true,
   "update:tabSelectValue": (_value?: string) => true,
   "delete:tabOption": (_value: string) => true,
 };
@@ -49,35 +48,37 @@ export const DLayoutTabs = defineComponent({
     const router = useRouter();
 
     // 外部状态，如果外部未设置初始值就不做双向绑定
-    const { tabOptions, tabSelectValue } = useVModels(props, emit);
+    const tabSelectValueModel = useVModel(props, "tabSelectValue", emit);
 
     // 删除
     const handleRemove = (tab: any, tabIndex: number) => {
-      if (tab.value === tabSelectValue.value) {
+      if (tab.value === tabSelectValueModel.value) {
         // 删除本条，切换位置，优先找到下一条
-        let newTab = tabOptions.value[tabIndex + 1];
+        let newTab = props.tabOptions[tabIndex + 1];
         if (!newTab) {
           // 如果没有就找前一条
-          newTab = tabOptions.value[tabIndex - 1];
+          newTab = props.tabOptions[tabIndex - 1];
         }
         // 这是新位置，有可能前后都没有
         const value = newTab?.value ?? undefined;
+        // 触发更新
         updateValue(value);
         if (newTab && newTab.to) {
           // 删除，如果新节点是路由，则自动跳转
           router.push(newTab.to);
         }
       }
-      // 过滤掉被删除的数据
-      tabOptions.value = tabOptions.value.filter(
-        (option) => option.value !== tab.value
-      );
       emit("delete:tabOption", tab.value);
     };
 
     // 更新
     const updateValue = (value: any) => {
-      tabSelectValue.value = value;
+      if (tabSelectValueModel.value == null) {
+        // 没有传入值，主动触发事件
+        emit("update:tabSelectValue", value);
+      } else {
+        tabSelectValueModel.value = value;
+      }
     };
 
     return () => {
@@ -89,7 +90,9 @@ export const DLayoutTabs = defineComponent({
           hideSlider
           showArrows
           mandatory
-          modelValue={tabSelectValue.value}
+          {...(tabSelectValueModel.value == null
+            ? {}
+            : { modelValue: tabSelectValueModel.value })}
           onUpdate:modelValue={updateValue}
           prevIcon={() => (
             <div class={"d-layout-tab-prev"}>
@@ -114,7 +117,7 @@ export const DLayoutTabs = defineComponent({
             </div>
           )}
         >
-          {tabOptions.value.map((option, tabIndex) => (
+          {props.tabOptions.map((option, tabIndex) => (
             <VTab
               key={option.value}
               baseColor={"grey-darken-1"}

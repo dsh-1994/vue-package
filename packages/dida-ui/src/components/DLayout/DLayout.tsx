@@ -1,4 +1,4 @@
-import { defineComponent, toRaw, ref, watch } from "vue";
+import { defineComponent, ref } from "vue";
 import "./DLayout.scss";
 import {
   VApp,
@@ -15,11 +15,7 @@ import {
 } from "./DLayoutMenu";
 import { useVModel } from "@vueuse/core";
 import config from "../../styles/theme.module.scss";
-import {
-  DLayoutTabsEmitsT,
-  DLayoutTabsPropsT,
-  type DLayoutTabOptions,
-} from "./DLayoutTabs";
+import { DLayoutTabsEmitsT, DLayoutTabsPropsT } from "./DLayoutTabs";
 import { DLayoutTabs } from "./DLayoutTabs";
 import ShowSvg from "show-svg";
 
@@ -31,9 +27,6 @@ export const DLayoutEmitsT = {
   ...DLayoutMenuEmitsT,
   ...DLayoutTabsEmitsT,
 };
-// export type DLayoutExposeT = {
-//   addTabOption: (option: DLayoutTabOption) => boolean // false 表示新增失败
-// }
 
 export const DLayout = defineComponent({
   name: "DLayout",
@@ -42,69 +35,12 @@ export const DLayout = defineComponent({
   setup(props, { slots, emit }) {
     const drawer = ref(true); // 展开/收起
 
-    // menu ------ start
-    // 内置状态，变更时也会发送出去
-    const menuOpened = ref<string[]>([]);
-    const menuSelected = ref<string[]>([]);
-    watch(
-      () => menuOpened.value,
-      (value) => {
-        emit("update:menuOpened", toRaw(value));
-      }
-    );
-    watch(
-      () => menuSelected.value,
-      (value) => {
-        emit("update:menuSelected", toRaw(value));
-      }
-    );
-    // 联合状态
-    const menuOpenedModel =
-      props.menuOpened === undefined
-        ? menuOpened
-        : useVModel(props, "menuOpened", emit);
-    const menuSelectedModel =
-      props.menuSelected === undefined
-        ? menuSelected
-        : useVModel(props, "menuSelected", emit);
-    // menu ------ end
+    // menu 双向绑定状态
+    const menuOpenedModel = useVModel(props, "menuOpened", emit);
+    const menuSelectedModel = useVModel(props, "menuSelected", emit);
 
-    // tab ------ start
-    // 内置状态，变更时也会发送出去
-    const tabOptions = ref<DLayoutTabOptions>([]);
-    const tabSelectValue = ref<string>("");
-    watch(
-      () => tabOptions.value,
-      (value) => {
-        emit("update:tabOptions", toRaw(value));
-      }
-    );
-    watch(
-      () => tabSelectValue.value,
-      (value) => {
-        emit("update:tabSelectValue", value);
-      }
-    );
-    // 联合状态
-    const tabOptionsModel =
-      props.tabOptions === undefined
-        ? tabOptions
-        : useVModel(props, "tabOptions", emit);
-    const tabSelectValueModel =
-      props.tabSelectValue === undefined
-        ? tabSelectValue
-        : useVModel(props, "tabSelectValue", emit);
-    // 内置新增tab功能
-    // function addTabOption(option: DLayoutTabOption) {
-    //   console.log('option', option, tabOptionsModel.value)
-    //   // previewFileList.value = urlToFilelist(urls);
-    //   return false
-    // }
-    // tab ------ end
-
-    // expose<DLayoutExposeT>({
-    //   addTabOption,
-    // })
+    // tab 双向绑定状态
+    const tabSelectValueModel = useVModel(props, "tabSelectValue", emit);
 
     return () => {
       return (
@@ -165,7 +101,7 @@ export const DLayout = defineComponent({
                   <div class={"d-layout-tabs"}>
                     <DLayoutTabs
                       headerHeight={props.headerHeight}
-                      v-model:tabOptions={tabOptionsModel.value}
+                      tabOptions={props.tabOptions}
                       v-model:tabSelectValue={tabSelectValueModel.value}
                       onDelete:tabOption={(...args) => {
                         emit("delete:tabOption", ...args);
