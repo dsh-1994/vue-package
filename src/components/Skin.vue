@@ -3,7 +3,11 @@
     <template #activator="{ props }">
       <VBtn size="smail" variant="text" :icon="iconfn" v-bind="props"></VBtn>
     </template>
-    <v-list :selected="[userConfigStore.skinDefault]" @update:selected="sel">
+    <v-list
+      mandatory
+      :selected="[userConfigStore.skinDefault]"
+      @update:selected="sel"
+    >
       <v-list-subheader>{{ $t(`skin.title`) }}</v-list-subheader>
       <v-list-item
         v-for="item in userConfigStore.skinList"
