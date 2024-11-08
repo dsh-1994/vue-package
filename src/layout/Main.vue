@@ -24,6 +24,7 @@
           height: 100%;
         "
       >
+        <Skin />
         <Language />
         <User />
       </div>
@@ -40,6 +41,7 @@ import {
 } from "dida-ui";
 import Logo from "@/assets/vuetify-logo-light.png";
 import { computed, nextTick, ref } from "vue";
+import Skin from "@/components/Skin.vue";
 import ShowSvg from "show-svg";
 import Language from "@/components/Language.vue";
 import User from "@/components/User.vue";
@@ -145,7 +147,7 @@ function onMenuOpened(value: string[]) {
   // console.log("Home onOpened", value);
 }
 function onMenuSelected(value: string[]) {
-  console.log("Home onSelected", value);
+  // console.log("Home onSelected", value);
   // 左侧menu选中，需要设置tab菜单
   // 如果不需要tab，如果不需要联动就不需要监听
   const pathname = value[0];
@@ -155,7 +157,7 @@ function onMenuSelected(value: string[]) {
   }
 }
 function onTabSelectValue(value?: string) {
-  console.log("Home onTabSelectValue", value);
+  // console.log("Home onTabSelectValue", value);
   // tab菜单选中，需要对应到左侧menu选中、展开的值
   if (value) {
     menuSelected.value = [value];

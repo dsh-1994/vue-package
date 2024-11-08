@@ -14,7 +14,6 @@ import {
   DLayoutMenuPropsT,
 } from "./DLayoutMenu";
 import { useVModel } from "@vueuse/core";
-import config from "../../styles/theme.module.scss";
 import { DLayoutTabsEmitsT, DLayoutTabsPropsT } from "./DLayoutTabs";
 import { DLayoutTabs } from "./DLayoutTabs";
 import ShowSvg from "show-svg";
@@ -59,18 +58,12 @@ export const DLayout = defineComponent({
                       class={{
                         "d-layout-anime-flip": !drawer.value,
                       }}
+                      color={"var(--dida-primary-color)"}
                       active
-                      color={config["--light-color"]}
                       rounded={"lg"}
                       size={"small"}
                       variant="text"
-                      icon={() => (
-                        <ShowSvg
-                          size={"20px"}
-                          color={config["--light-color"]}
-                          name="left"
-                        />
-                      )}
+                      icon={() => <ShowSvg size={"20px"} name="left" />}
                       onClick={() => (drawer.value = !drawer.value)}
                     ></VBtn>
                   </div>
@@ -118,7 +111,8 @@ export const DLayout = defineComponent({
             </VAppBar>
           ) : null}
 
-          <VMain style={{ backgroundColor: config["--light-bg-color"] }}>
+          <VMain>
+            <div class={"d-layout-main-bg"}></div>
             {slots.default?.()}
           </VMain>
         </VApp>

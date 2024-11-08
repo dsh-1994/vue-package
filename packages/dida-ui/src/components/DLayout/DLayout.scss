@@ -13,7 +13,7 @@
     display: flex;
     align-items: center;
     &-inner {
-      background-color: #fff;
+      background-color: var(--dida-primary-default-bg-color);
     }
   }
 
@@ -60,7 +60,7 @@
         position: absolute;
         width: 1px;
         height: 30px;
-        background-color: #d9d8d8;
+        background-color: #d9d8d8; // 左右箭头竖线
       }
     }
     .d-layout-tab-prev {
@@ -80,7 +80,7 @@
       background-color: transparent;
       transition: 0.3s;
       &:hover {
-        background-color: var(--primary-bg-color);
+        background-color: var(--dida-primary-bg-color);
       }
     }
     .d-layout-tab-text {
@@ -91,7 +91,7 @@
     .v-tab-item--selected {
       position: relative;
       z-index: 1;
-      background-color: var(--primary-bg-color);
+      background-color: var(--dida-primary-bg-color);
       .d-layout-tab-before,
       .d-layout-tab-after {
         opacity: 0;
@@ -111,9 +111,13 @@
         background: radial-gradient(
             circle at 0% 0%,
             transparent 16px,
-            var(--primary-bg-color) 0
+            var(--dida-primary-bg-color) 0
           ),
-          radial-gradient(circle at 0% 0%, transparent 16px, #fff 0);
+          radial-gradient(
+            circle at 0% 0%,
+            transparent 16px,
+            var(--dida-primary-default-bg-color) 0
+          );
       }
       .d-layout-tab-after {
         animation-name: d-layout-tab-before-show-in;
@@ -124,26 +128,38 @@
         background: radial-gradient(
             circle at 100% 0%,
             transparent 16px,
-            var(--primary-bg-color) 0
+            var(--dida-primary-bg-color) 0
           ),
-          radial-gradient(circle at 100% 0%, transparent 16px, #fff 0);
+          radial-gradient(
+            circle at 100% 0%,
+            transparent 16px,
+            var(--dida-primary-default-bg-color) 0
+          );
       }
       &:hover {
         .d-layout-tab-before {
           background: radial-gradient(
               circle at 0% 0%,
               transparent 16px,
-              rgba(69, 97, 246, 0.1) 0
+              var(--dida-primary-heighten-bg-color) 0
             ),
-            radial-gradient(circle at 0% 0%, transparent 16px, #fff 0);
+            radial-gradient(
+              circle at 0% 0%,
+              transparent 16px,
+              var(--dida-primary-default-bg-color) 0
+            );
         }
         .d-layout-tab-after {
           background: radial-gradient(
               circle at 100% 0%,
               transparent 16px,
-              rgba(69, 97, 246, 0.1) 0
+              var(--dida-primary-heighten-bg-color) 0
             ),
-            radial-gradient(circle at 100% 0%, transparent 16px, #fff 0);
+            radial-gradient(
+              circle at 100% 0%,
+              transparent 16px,
+              var(--dida-primary-default-bg-color) 0
+            );
         }
       }
     }
@@ -151,6 +167,15 @@
   &-tabs-menu {
     padding-left: 8px;
     padding-right: 18px;
+  }
+
+  &-main-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--dida-primary-bg-color);
   }
 }
 

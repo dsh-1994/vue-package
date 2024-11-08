@@ -3,8 +3,8 @@ import "./DLayout.scss";
 import { VList, VListGroup, VListItem } from "vuetify/components";
 import { useVModels } from "@vueuse/core";
 
-import config from "../../styles/theme.module.scss";
 import type { RouteLocationRaw } from "vue-router";
+import { useUserConfigStore } from "@/stores/user-config";
 
 export type DLayoutMenuOption = {
   title: string;
@@ -45,6 +45,8 @@ export const DLayoutMenu = defineComponent({
   props: DLayoutMenuPropsT,
   emits: DLayoutMenuEmitsT,
   setup(props, { emit }) {
+    const userConfigStore = useUserConfigStore();
+
     // 渲染菜单，可以使用原生 items 代替，但是这样将失去定制的功能
     // 按道理 DLayoutMenuOptions 需要从原生继承，但是这里没找到哪里导出原生属性，所以暂时先自己写一份简化版的
     const renderItem = (itemProps: DLayoutMenuOption & Record<string, any>) => {
@@ -85,7 +87,12 @@ export const DLayoutMenu = defineComponent({
     return () => {
       return (
         <VList
-          color={config["--light-color"]}
+          color={"var(--dida-primary-color)"}
+          baseColor={
+            userConfigStore.skin === "dark"
+              ? "var(--dida-primary-default-color)"
+              : undefined
+          }
           mandatory
           {...(menuOpened.value == null ? {} : { opened: menuOpened.value })}
           {...(modelValue.value == null ? {} : { selected: modelValue.value })}

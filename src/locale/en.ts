@@ -1,5 +1,11 @@
 // 英语
 export default {
+  skin: {
+    title: "appearance",
+    auto: "auto",
+    light: "light",
+    dark: "dark",
+  },
   user: {
     hello: "hello, {name}",
     personalCenter: "personal center",

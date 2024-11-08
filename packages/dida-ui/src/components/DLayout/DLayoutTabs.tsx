@@ -3,7 +3,6 @@ import "./DLayout.scss";
 import { VBtn, VTab, VTabs } from "vuetify/components";
 import { useVModel } from "@vueuse/core";
 
-import config from "../../styles/theme.module.scss";
 import ShowSvg from "show-svg";
 import { useRouter, type RouteLocationRaw } from "vue-router";
 
@@ -87,7 +86,7 @@ export const DLayoutTabs = defineComponent({
         <VTabs
           height={props.headerHeight - 8}
           align-tabs="title"
-          color={config["--light-color"]}
+          color={"var(--dida-primary-color)"}
           hideSlider
           showArrows
           mandatory
@@ -99,7 +98,7 @@ export const DLayoutTabs = defineComponent({
             <div class={"d-layout-tab-prev"}>
               <VBtn
                 active
-                color={config["--light-color"]}
+                color={"var(--dida-primary-color)"}
                 variant="text"
                 size={20}
                 icon={() => <ShowSvg size={"10px"} name="arrow-left" />}
@@ -110,7 +109,7 @@ export const DLayoutTabs = defineComponent({
             <div class={"d-layout-tab-next"}>
               <VBtn
                 active
-                color={config["--light-color"]}
+                color={"var(--dida-primary-color)"}
                 variant="text"
                 size={20}
                 icon={() => <ShowSvg size={"10px"} name="arrow-right" />}
@@ -121,7 +120,7 @@ export const DLayoutTabs = defineComponent({
           {props.tabOptions.map((option, tabIndex) => (
             <VTab
               key={option.value}
-              baseColor={"grey-darken-1"}
+              baseColor={"var(--dida-primary-default-color)"}
               rounded={"t-lg"}
               {...option}
               v-slots={{

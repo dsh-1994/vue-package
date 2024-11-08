@@ -1,26 +1,33 @@
 // 皮肤变量
 
-// 亮
-$light-color: rgb(69, 97, 246);
-$light-bg-color: rgba(69, 97, 246, 0.05);
-// 暗
-$dark-color: rgb(204, 204, 204);
+// 明亮
+$light-default-color: rgb(117, 117, 117) !default;
+$light-default-bg-color: rgb(255, 255, 255) !default;
+$light-color: rgb(69, 97, 246) !default;
+$light-bg-color: rgba(69, 97, 246, 0.05) !default;
+$light-heighten-bg-color: rgba(69, 97, 246, 0.1) !default;
+
+// 暗黑
+$dark-default-color: rgb(117, 117, 117) !default;
+$dark-default-bg-color: rgb(33, 33, 33) !default;
+$dark-color: rgb(204, 204, 204) !default;
+$dark-bg-color: rgba(204, 204, 204, 0.05) !default;
+$dark-heighten-bg-color: rgba(204, 204, 204, 0.1) !default;
 
 :root {
-  // 浅色主题
-  --primary-color: #{$light-color};
-  --primary-bg-color: #{$light-bg-color};
+  // 明亮
+  --dida-primary-default-color: #{$light-default-color};
+  --dida-primary-default-bg-color: #{$light-default-bg-color};
+  --dida-primary-color: #{$light-color};
+  --dida-primary-bg-color: #{$light-bg-color};
+  --dida-primary-heighten-bg-color: #{$light-heighten-bg-color};
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    // 深色主题
-    --primary-color: #{$dark-color};
-  }
-}
-
-:export {
-  --light-color: #{$light-color};
-  --light-bg-color: #{$light-bg-color};
-  --dark-color: #{$dark-color};
+.v-theme--dark {
+  // 暗黑
+  --dida-primary-default-color: #{$dark-default-color};
+  --dida-primary-default-bg-color: #{$dark-default-bg-color};
+  --dida-primary-color: #{$dark-color};
+  --dida-primary-bg-color: #{$dark-bg-color};
+  --dida-primary-heighten-bg-color: #{$dark-heighten-bg-color};
 }

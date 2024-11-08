@@ -1,5 +1,11 @@
 // 中文
 export default {
+  skin: {
+    title: "外观",
+    auto: "跟随系统",
+    light: "浅色",
+    dark: "深色",
+  },
   user: {
     hello: "你好，{name}",
     personalCenter: "个人中心",
